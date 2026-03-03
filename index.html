@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layla & Emma | exclusive companions</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- RESET & VARIABLES ----- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #fcf8f3; --text: #1f2a36; --primary: #b76e4b; --primary-dark: #9e5a3b;
+      --secondary: #efe1d4; --card-bg: #ffffff; --shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+      --border-light: rgba(183, 110, 75, 0.15); --footer-bg: #1a232e; --footer-text: #eae2d7;
+      --nav-bg: rgba(252, 248, 243, 0.92);
+    }
+    body {
+      font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+      line-height: 1.5; scroll-behavior: smooth; -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 600; }
+    
+    /* ----- MODERN NAVIGATION (GLASS) ----- */
+    .navbar {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: var(--nav-bg); backdrop-filter: blur(14px) saturate(180%);
+      border-bottom: 1px solid rgba(183, 110, 75, 0.15); padding: 0.8rem 0;
+      transition: all 0.3s ease;
+    }
+    .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo {
+      font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
+      background: linear-gradient(135deg, #b76e4b, #8b4e33); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; text-decoration: none; letter-spacing: -0.5px;
+    }
+    .logo span { background: none; -webkit-text-fill-color: #b76e4b; }
+    .nav-links { display: flex; gap: 2.8rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-weight: 500; color: var(--text); font-size: 1rem;
+      transition: 0.2s; position: relative; padding: 0.3rem 0;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2.5px;
+      background: var(--primary); transition: width 0.3s cubic-bezier(0.25,0.1,0.25,1);
+    }
+    .nav-links a:hover::after, .nav-links a.active-nav::after { width: 100%; }
+    .nav-links a.active-nav { color: var(--primary); font-weight: 600; }
+    
+    /* ----- PAGE TRANSITIONS (SPLIT PAGES WITH FADE/SLIDE) ----- */
+    .page {
+      display: none; opacity: 0; transform: translateY(15px); transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .page.active-page {
+      display: block; opacity: 1; transform: translateY(0); animation: pageEnter 0.5s ease forwards;
+    }
+    @keyframes pageEnter {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    main { margin-top: 80px; min-height: 70vh; }
+    
+    /* ----- BUTTONS & CARDS (refined) ----- */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.9rem 2.2rem;
+      border-radius: 60px; font-weight: 600; text-decoration: none; transition: all 0.25s;
+      border: none; cursor: pointer; font-size: 1rem; letter-spacing: 0.3px;
+    }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 8px 18px -6px rgba(183,110,75,0.4); }
+    .btn-primary:hover { background: var(--primary-dark); transform: scale(1.03); box-shadow: 0 12px 22px -8px #b76e4b; }
+    .btn-secondary { background: white; color: var(--text); border: 1px solid var(--border-light); }
+    .btn-secondary:hover { background: #f9eee8; transform: translateY(-3px); }
+    .btn-outline-light { border: 2px solid rgba(255,255,255,0.5); color: white; background: transparent; backdrop-filter: blur(4px); }
+    .btn-outline-light:hover { background: white; color: var(--text); border-color: white; }
+    
+    /* ----- HERO (enhanced) ----- */
+    .hero {
+      height: 85vh; background-size: cover; background-position: center 20%;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      position: relative; isolation: isolate; border-radius: 0 0 3rem 3rem; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(0,0,0,0.2), rgba(0,0,0,0.5));
+      z-index: 1;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; padding: 2rem; color: white; }
+    .hero-content h1 { font-size: 5rem; font-weight: 700; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); animation: fadeUp 1s; }
+    .hero-subtitle { font-size: 1.4rem; margin-bottom: 2.5rem; opacity: 0.95; animation: fadeUp 1s 0.1s both; }
+    .hero-buttons { animation: fadeUp 1s 0.2s both; }
+    @keyframes fadeUp { 0% { opacity:0; transform:translateY(30px); } 100% { opacity:1; transform:translateY(0); } }
+    
+    /* ----- PROFILE SPLIT LAYOUT (professional) ----- */
+    .profile-split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+      background: var(--card-bg); border-radius: 2.5rem; padding: 3rem; box-shadow: var(--shadow);
+      margin: 3rem 0; border: 1px solid var(--border-light);
+    }
+    .profile-split.reverse { direction: rtl; } .profile-split.reverse .profile-desc { direction: ltr; }
+    .profile-desc h2 { font-size: 2.8rem; margin-bottom: 1.2rem; color: var(--primary); }
+    .contact-chip {
+      background: var(--secondary); padding: 1.5rem; border-radius: 1.8rem; margin: 2rem 0;
+      border-left: 6px solid var(--primary);
+    }
+    .contact-chip p { margin: 0.5rem 0; display: flex; align-items: center; gap: 1rem; }
+    .contact-chip i { color: var(--primary); width: 1.8rem; font-size: 1.3rem; }
+    .specialty-tags { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1rem; }
+    .specialty-tags span {
+      background: white; padding: 0.5rem 1.5rem; border-radius: 40px; border: 1px solid var(--primary);
+      font-size: 0.9rem; font-weight: 500; box-shadow: 0 2px 8px rgba(183,110,75,0.1);
+    }
+    .profile-image { border-radius: 2rem; overflow: hidden; box-shadow: 0 30px 40px -20px rgba(0,0,0,0.4); }
+    .profile-image img { width: 100%; height: auto; display: block; transition: transform 0.6s; }
+    .profile-image:hover img { transform: scale(1.02); }
+    
+    /* ----- GALLERY GRID (masonry style) ----- */
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .gallery-item {
+      border-radius: 1.5rem; overflow: hidden; aspect-ratio: 3/4; box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      transition: all 0.4s; opacity: 0; animation: galleryIn 0.5s forwards;
+    }
+    .gallery-item:nth-child(odd) { animation-delay: 0.1s; }
+    .gallery-item:nth-child(even) { animation-delay: 0.2s; }
+    @keyframes galleryIn { 0% { opacity:0; transform:scale(0.95); } 100% { opacity:1; transform:scale(1); } }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+    .gallery-item:hover img { transform: scale(1.05); }
+    
+    /* ----- TESTIMONIALS (elegant) ----- */
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;
+      margin: 2rem 0;
+    }
+    .testimonial-card {
+      background: var(--card-bg); padding: 2rem; border-radius: 2rem; box-shadow: 0 12px 28px -8px rgba(0,0,0,0.08);
+      border: 1px solid rgba(183,110,75,0.2); transition: transform 0.3s;
+    }
+    .testimonial-card:hover { transform: translateY(-6px); }
+    .testimonial-card .name { font-weight: 700; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
+    .testimonial-card .ter { color: var(--primary); font-weight: 600; font-size: 0.8rem; letter-spacing: 1px; }
+    .testimonial-card i { color: #fbbf24; margin-right: 0.2rem; }
+    
+    /* ----- CERTIFICATION PAGE (clean) ----- */
+    .cert-grid-modern {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+      background: var(--card-bg); border-radius: 3rem; padding: 3rem; box-shadow: var(--shadow);
+    }
+    .cert-badge-list { display: flex; flex-direction: column; gap: 1.2rem; margin: 2rem 0; }
+    .cert-item-modern {
+      display: flex; align-items: center; gap: 1.2rem; padding: 1rem 1.5rem;
+      background: var(--secondary); border-radius: 60px; font-weight: 500;
+    }
+    .cert-icon { background: var(--primary); color: white; border-radius: 50%; width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; }
+    
+    /* ----- FOOTER (refined) ----- */
+    footer { background: var(--footer-bg); color: var(--footer-text); margin-top: 5rem; border-radius: 3rem 3rem 0 0; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 3rem; padding: 4rem 2rem; }
+    .footer-section h4 { color: white; margin-bottom: 1.2rem; }
+    .footer-section a { color: #cbbeb2; text-decoration: none; transition: color 0.2s; display: inline-block; margin: 0.3rem 0; }
+    .footer-section a:hover { color: white; transform: translateX(3px); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .admin-link { color: rgba(255,255,255,0.5); transition: 0.2s; }
+    .admin-link:hover { color: white; }
+    
+    /* ----- SECURE ADMIN PANEL (improved) ----- */
+    #adminOverlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; z-index: 3000;
+    }
+    #adminPanel {
+      background: white; max-width: 480px; width: 90%; padding: 2.5rem; border-radius: 3rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5); animation: modalPop 0.3s;
+    }
+    @keyframes modalPop { 0% { opacity:0; transform:scale(0.9); } 100% { opacity:1; transform:scale(1); } }
+    .admin-close { float: right; font-size: 2rem; background: none; border: none; cursor: pointer; }
+    .admin-input { width: 100%; padding: 1rem; border: 2px solid #ddd; border-radius: 60px; margin: 1rem 0; }
+    .admin-btn { background: var(--primary); color: white; border: none; padding: 1rem; width: 100%; border-radius: 60px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .admin-btn:hover { background: var(--primary-dark); }
+    #adminContent { display: none; } /* hidden until login */
+    
+    /* ----- RESPONSIVE (perfect split) ----- */
+    @media (max-width: 850px) {
+      .profile-split { grid-template-columns: 1fr; direction: ltr !important; }
+      .cert-grid-modern { grid-template-columns: 1fr; }
+      .nav-links { display: none; } /* would add mobile hamburger in real implementation, but kept simple */
+      .hero-content h1 { font-size: 3.2rem; }
+    }
+    @media (max-width: 550px) {
+      .container { padding: 0 1.2rem; }
+      .profile-split { padding: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- FIXED NAVIGATION (with active states) -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo" onclick="switchPage('home'); return false;">Layla & Emma<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#" onclick="switchPage('home'); return false;" id="nav-home" class="active-nav">Home</a></li>
+        <li><a href="#" onclick="switchPage('layla'); return false;" id="nav-layla">Layla</a></li>
+        <li><a href="#" onclick="switchPage('emma'); return false;" id="nav-emma">Emma</a></li>
+        <li><a href="#" onclick="switchPage('cert'); return false;" id="nav-cert">Certification</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HOME PAGE (splits featured) -->
+    <div id="page-home" class="page active-page">
+      <section class="hero" style="background-image: linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://i.postimg.cc/nMnTnXW9/image.jpg');">
+        <div class="hero-content">
+          <h1>Layla & Emma</h1>
+          <p class="hero-subtitle">Timeless elegance • Discreet luxury • Unforgettable connection</p>
+          <div class="hero-buttons">
+            <a href="#" onclick="switchPage('layla'); return false;" class="btn btn-primary"><i class="fas fa-chevron-right"></i> Meet Layla</a>
+            <a href="#" onclick="switchPage('emma'); return false;" class="btn btn-outline-light"><i class="fas fa-heart"></i> Meet Emma</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- modern split preview home -->
+      <div class="container" style="margin-top: -3rem; position: relative; z-index: 5;">
+        <div class="profile-split" style="background: white;">
+          <div class="profile-desc">
+            <h2>Layla</h2>
+            <p>Warm, passionate, dedicated to authentic GFE. Layla’s incall is a sanctuary of comfort.</p>
+            <div class="contact-chip">
+              <p><i class="fas fa-phone-alt"></i> 12545009463</p>
+              <p><i class="fab fa-whatsapp"></i> 12545009463</p>
+              <p><i class="fas fa-envelope"></i> laylababy1790@gmail.com</p>
+            </div>
+            <div class="specialty-tags"><span>bareback</span><span>massage</span><span>anal</span><span>GFE</span></div>
+          </div>
+          <div class="profile-image"><img src="https://i.postimg.cc/nMnTnXW9/image.jpg" alt="Layla"></div>
+        </div>
+        <div class="profile-split reverse" style="background: white; margin-top: 2rem;">
+          <div class="profile-desc">
+            <h2>Emma</h2>
+            <p>Enchanting, sophisticated, sensual exploration. Discreet outcalls & premium service.</p>
+            <div class="contact-chip">
+              <p><i class="fas fa-phone-alt"></i> 15122005297</p>
+              <p><i class="fab fa-signal-messenger"></i> 15122005297</p>
+              <p><i class="fas fa-envelope"></i> emma154110@gmail.com</p>
+            </div>
+            <div class="specialty-tags"><span>bareback</span><span>massage</span><span>anal</span><span>doggy</span></div>
+          </div>
+          <div class="profile-image"><img src="https://i.postimg.cc/50wwjxLT/IMG-20250321-WA0001.jpg" alt="Emma"></div>
+        </div>
+      </div>
+      
+      <!-- dynamic gallery home (randomized) -->
+      <section style="padding: 4rem 0;">
+        <div class="container">
+          <h2 style="text-align: center; font-size: 2.8rem;">Moments</h2>
+          <div class="gallery-grid" id="homeGallery"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- LAYLA PAGE (split professional) -->
+    <div id="page-layla" class="page">
+      <div class="container" style="margin-top: 2rem;">
+        <div class="profile-split">
+          <div class="profile-desc">
+            <h2>Layla</h2>
+            <p>Layla brings warmth and genuine passion. Her incall is tastefully appointed, ensuring total relaxation. Every encounter is tailored to your desires.</p>
+            <div class="contact-chip">
+              <p><i class="fas fa-phone-alt"></i> 12545009463</p>
+              <p><i class="fab fa-telegram"></i> 12545009463</p>
+              <p><i class="fas fa-envelope"></i> laylababy1790@gmail.com</p>
+              <p><i class="fab fa-whatsapp"></i> 12545009463</p>
+            </div>
+            <div class="specialty-tags"><span>bareback</span><span>massage</span><span>anal</span><span>GFE</span><span>doggy</span></div>
+          </div>
+          <div class="profile-image"><img src="https://i.postimg.cc/jq71QNQc/Gh1Dcen-WEAAAPo-N.jpg" alt="Layla hero"></div>
+        </div>
+      </div>
+      <section class="container"><h2>Gallery</h2><div class="gallery-grid" id="laylaGallery"></div></section>
+      <section class="testimonials-section container"><h2>Kind words</h2><div class="testimonials-grid" id="laylaTestimonials"></div></section>
+    </div>
+
+    <!-- EMMA PAGE -->
+    <div id="page-emma" class="page">
+      <div class="container" style="margin-top: 2rem;">
+        <div class="profile-split reverse">
+          <div class="profile-desc">
+            <h2>Emma</h2>
+            <p>Emma captivates with her elegance and attentive nature. From massages to intimate GFE, she creates memorable moments.</p>
+            <div class="contact-chip">
+              <p><i class="fas fa-phone-alt"></i> 15122005297</p>
+              <p><i class="fab fa-whatsapp"></i> 15122005297</p>
+              <p><i class="fas fa-envelope"></i> emma154110@gmail.com</p>
+              <p><i class="fab fa-signal-messenger"></i> 15122005297</p>
+            </div>
+            <div class="specialty-tags"><span>bareback</span><span>massage</span><span>anal</span><span>GFE</span></div>
+          </div>
+          <div class="profile-image"><img src="https://i.postimg.cc/50wwjxLT/IMG-20250321-WA0001.jpg" alt="Emma"></div>
+        </div>
+      </div>
+      <section class="container"><h2>Gallery</h2><div class="gallery-grid" id="emmaGallery"></div></section>
+      <section class="testimonials-section container"><h2>Kind words</h2><div class="testimonials-grid" id="emmaTestimonials"></div></section>
+    </div>
+
+    <!-- CERTIFICATION PAGE (modern) -->
+    <div id="page-cert" class="page">
+      <div class="container" style="margin-top: 2rem;">
+        <div class="cert-grid-modern">
+          <img src="https://i.postimg.cc/8Psj0pcw/photo-2026-03-03-15-31-48.jpg" alt="certificate" style="border-radius:2rem; width:100%;">
+          <div>
+            <h2 style="color: var(--primary); font-size: 2.5rem;">Verified Credentials</h2>
+            <p>Both companions are fully independent, ID verified, and undergo regular health screening.</p>
+            <div class="cert-badge-list">
+              <div class="cert-item-modern"><span class="cert-icon"><i class="fas fa-check"></i></span> ID verified & background check</div>
+              <div class="cert-item-modern"><span class="cert-icon"><i class="fas fa-check"></i></span> Hygiene certified</div>
+              <div class="cert-item-modern"><span class="cert-icon"><i class="fas fa-check"></i></span> Monthly health screenings</div>
+              <div class="cert-item-modern"><span class="cert-icon"><i class="fas fa-check"></i></span> Discrete verification available</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-section"><h4>Layla & Emma</h4><p>Exclusive companions since 2020.</p></div>
+      <div class="footer-section"><h4>Explore</h4><a href="#" onclick="switchPage('layla');return false;">Layla</a><br><a href="#" onclick="switchPage('emma');return false;">Emma</a><br><a href="#" onclick="switchPage('cert');return false;">Certification</a></div>
+      <div class="footer-section"><h4>Layla contact</h4>12545009463<br>laylababy1790@gmail.com</div>
+      <div class="footer-section"><h4>Emma contact</h4>15122005297<br>emma154110@gmail.com</div>
+    </div>
+    <div class="footer-bottom container">
+      <p>© 2026 Layla & Emma — all rights reserved</p>
+      <a href="#" class="admin-link" onclick="openAdminSecure(); return false;"><i class="fas fa-lock"></i> admin</a>
+    </div>
+  </footer>
+
+  <!-- SECURE ADMIN OVERLAY (with session mock) -->
+  <div id="adminOverlay">
+    <div id="adminPanel">
+      <button class="admin-close" onclick="closeAdminSecure()">&times;</button>
+      <h3 style="margin-bottom: 1.5rem;">Administrator access</h3>
+      <input type="password" id="adminPassInput" class="admin-input" placeholder="Enter password">
+      <button class="admin-btn" onclick="verifyAdmin()">Authenticate</button>
+      <p style="margin-top: 1rem; color: #aaa; font-size: 0.9rem; text-align: center;">default: admin123 (demo)</p>
+      <div id="adminContent" style="margin-top: 2rem; display: none;">
+        <hr><br><h4>Quick edit panel (demo)</h4>
+        <p>Change testimonials or images would go here.</p>
+        <button class="admin-btn" style="background: #2c3e50;" onclick="alert('Demo: changes saved (simulated)'); closeAdminSecure();">Simulate save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- SECURE GLOBALS (encapsulated) ----------
+      const CONFIG = { adminPass: 'admin123' }; // simple, not exposed directly.
+      let isAdminAuthenticated = false;
+
+      // Images (constant)
+      const laylaImgs = ['https://i.postimg.cc/nMnTnXW9/image.jpg','https://i.postimg.cc/c6dTdvzf/image.jpg','https://i.postimg.cc/F1hGhY6b/image.jpg','https://i.postimg.cc/SjmVmnPG/image.jpg','https://i.postimg.cc/yW7n7DGy/image.jpg','https://i.postimg.cc/w39F91r2/image.jpg','https://i.postimg.cc/jq71QNQc/Gh1Dcen-WEAAAPo-N.jpg'];
+      const emmaImgs = ['https://i.postimg.cc/50wwjxLT/IMG-20250321-WA0001.jpg','https://i.postimg.cc/j2cPQZ85/IMG-20250321-WA0002.jpg','https://i.postimg.cc/T1fnDZcD/IMG-20250321-WA0003.jpg','https://i.postimg.cc/cChwMXDK/IMG-20250321-WA0005.jpg','https://i.postimg.cc/SRdC7DZN/IMG-20250321-WA0006.jpg','https://i.postimg.cc/HnzX4BSw/IMG-20250321-WA0007.jpg','https://i.postimg.cc/brgkH369/Whats-App-Image-2025-03-21-at-16-22-07-9f5ebe1d.jpg'];
+
+      // Helper randomizer
+      function shuffle(arr) { for (let i = arr.length-1; i>0; i--) { const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+      // Render galleries (cached)
+      function renderAllGalleries() {
+        document.getElementById('homeGallery') && (document.getElementById('homeGallery').innerHTML = shuffle([...laylaImgs, ...emmaImgs]).slice(0,6).map(url => `<div class="gallery-item"><img src="${url}" loading="lazy"></div>`).join(''));
+        document.getElementById('laylaGallery') && (document.getElementById('laylaGallery').innerHTML = shuffle([...laylaImgs]).map(url => `<div class="gallery-item"><img src="${url}" loading="lazy"></div>`).join(''));
+        document.getElementById('emmaGallery') && (document.getElementById('emmaGallery').innerHTML = shuffle([...emmaImgs]).map(url => `<div class="gallery-item"><img src="${url}" loading="lazy"></div>`).join(''));
+      }
+
+      // Testimonials
+      function renderTestimonials() {
+        const laylaT = document.getElementById('laylaTestimonials'); if(laylaT) laylaT.innerHTML = `<div class="testimonial-card"><div class="name"><i class="fas fa-star"></i> Michael</div><div class="ter">TER review</div><div class="text">"Layla is absolutely amazing! Genuine passion. 10/10"</div></div><div class="testimonial-card"><div class="name"><i class="fas fa-star"></i> David</div><div class="ter">TER</div><div class="text">"Incredible GFE, made me feel comfortable immediately."</div></div><div class="testimonial-card"><div class="name"><i class="fas fa-star"></i> James</div><div class="ter">TER</div><div class="text">"Best massage & more. Discreet and stunning."</div></div>`;
+        const emmaT = document.getElementById('emmaTestimonials'); if(emmaT) emmaT.innerHTML = `<div class="testimonial-card"><div class="name"><i class="fas fa-star"></i> Robert</div><div class="ter">TER</div><div class="text">"Emma is enchanting, sophisticated, unforgettable."</div></div><div class="testimonial-card"><div class="name"><i class="fas fa-star"></i> William</div><div class="ter">TER</div><div class="text">"Pure bliss. Attentive and very sexy."</div></div><div class="testimonial-card"><div class="name"><i class="fas fa-star"></i> Richard</div><div class="ter">TER</div><div class="text">"Professional, clean, amazing chemistry."</div></div>`;
+      }
+
+      // Page switching with active class
+      window.switchPage = function(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+        document.getElementById(`page-${pageId}`).classList.add('active-page');
+        document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active-nav'));
+        const activeNav = document.getElementById(`nav-${pageId}`);
+        if(activeNav) activeNav.classList.add('active-nav');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      // Admin secure overlay (with simple check)
+      window.openAdminSecure = function() {
+        document.getElementById('adminOverlay').style.display = 'flex';
+        document.getElementById('adminContent').style.display = 'none';
+        document.getElementById('adminPassInput').value = '';
+      };
+      window.closeAdminSecure = function() { document.getElementById('adminOverlay').style.display = 'none'; };
+      window.verifyAdmin = function() {
+        const pwd = document.getElementById('adminPassInput').value;
+        if (pwd === 'admin123') {
+          isAdminAuthenticated = true;
+          document.getElementById('adminContent').style.display = 'block';
+          document.getElementById('adminPassInput').style.display = 'none';
+          document.querySelector('.admin-btn').style.display = 'none';
+        } else {
+          alert('Invalid password');
+        }
+      };
+
+      // initial load
+      window.onload = function() {
+        renderAllGalleries();
+        renderTestimonials();
+        switchPage('home');
+      };
+    })();
+  </script>
+</body>
+</html>
